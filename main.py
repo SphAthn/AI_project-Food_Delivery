@@ -27,7 +27,7 @@ if __name__ == "__main__":
     # ...
 
     # Compute distance
-    df_with_distance = compute_distance(raw_df)
+    df_with_distance = compute_distance(raw_df, method="manhattan")
 
     print("\nDataset with distance: ", df_with_distance.shape[0], " rows, ", df_with_distance.shape[1], "columns")
     print("First rows of the dataset with distance:")
