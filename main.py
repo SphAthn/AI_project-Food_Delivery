@@ -32,3 +32,13 @@ if __name__ == "__main__":
     print("\nDataset with distance: ", df_with_distance.shape[0], " rows, ", df_with_distance.shape[1], "columns")
     print("First rows of the dataset with distance:")
     print(df_with_distance.head())
+
+    # Other preprocessing steps
+    #...
+
+    final_df = df_with_distance
+
+    
+
+    # Save the preprocessed dataset to a new CSV file
+    final_df.to_csv("data/Zomato_Dataset_preprocessed.csv", index=False)
