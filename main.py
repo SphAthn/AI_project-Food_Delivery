@@ -10,6 +10,9 @@ Run with:
 RAW_CSV_NAME = "data/Zomato_Dataset_raw.csv" 
 
 
+import numpy as np
+import pandas as pd  
+from src.missing_values import clean_dataset
 from src.distance import compute_distance
 from src.load_dataset import load_dataset
 
@@ -23,11 +26,11 @@ if __name__ == "__main__":
     print("First rows of the dataset:")
     print(raw_df.head())
 
-    # Check for missing values
-    # ...
-
+    # Check for missing values 
+    clean_df = clean_dataset(raw_df)
+   
     # Compute distance
-    df_with_distance = compute_distance(raw_df, method="manhattan")
+    df_with_distance = compute_distance(clean_df, method="manhattan")
 
     print("\nDataset with distance: ", df_with_distance.shape[0], " rows, ", df_with_distance.shape[1], "columns")
     print("First rows of the dataset with distance:")
