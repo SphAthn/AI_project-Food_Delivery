@@ -76,7 +76,7 @@ def compute_distance(df, method):
     else:
         raise ValueError("Invalid method. Choose from 'euclidean', 'manhattan', or 'haversine'.")
 
-    df["distance"] = distance_km
+    df["distance_km"] = distance_km
     
     return df
 
