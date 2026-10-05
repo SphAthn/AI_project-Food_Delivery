@@ -1,17 +1,13 @@
-"""
-Main entry point for the project. 
-
-Run with:
-    python main.py
-
-"""
+# File: main.py
+# Date: 08-10-2026
+# Description: Runs the full data ingestion pipeline and exports  CSV files.
+# Usage: python main.py
 
 import os
 import numpy as np
 import pandas as pd
 
-from src.distance import compute_distance #choose 1 which one is work delete 1
-#from src.distance2 import compute_distance #choose 2 choose 1 which one is work delete 1
+from src.distance import compute_distance # Distance Calculation (Euclidean, Manhattan or Haversine)
 from src.feature_engineering import process_features # Temporal Extraction & RobustScaler
 from src.load_dataset import load_dataset # KaggleHub + Local Fallback Ingestion
 from src.missing_values import clean_dataset # Sanitization, Filtering, and Imputation
@@ -34,8 +30,8 @@ if __name__ == "__main__":
     # 2. Clean Dataset & Perform Null/Anomaly Audit
     clean_df = clean_dataset(raw_df)
 
-    # 3. Compute Vectorized Haversine Distance (km)
-    df_with_distance = compute_distance(clean_df, method="haversine") #or manhattan change "manhattan" to haversine
+    # 3. Compute Distance (km)
+    df_with_distance = compute_distance(clean_df, method="manhattan") #or euclidean or haversine
 
     print(
         f"Dataset after cleaning & distance calculation: "

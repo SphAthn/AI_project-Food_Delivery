@@ -1,6 +1,9 @@
+# Student Name: Sophie Anthoine
+# Student FAN: anth0095
+# File: distance.py
+# Date: 08-10-2026
+# Description: Computes the distance in km for each order.
 """
-    This modules computes the distance between the restaurant and the delivery location for each row
-
     Different distances are possible:
 
     - Euclidean distance (straight line)
