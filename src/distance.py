@@ -88,6 +88,12 @@ def compute_distance(df, method="manhattan"):
         df_out["distance_km"] = haversine_distance(lat1, lon1, lat2, lon2)
     else:
         raise ValueError("Invalid method. Choose from 'euclidean', 'manhattan', or 'haversine'.")
+    
+    print(f"Distance method: {method}")
+    print("distance_km -> min:", df_out['distance_km'].min())
+    print("mean:", df_out['distance_km'].mean())
+    print("max:", df_out['distance_km'].max())  
+    
     return df_out
 
 
