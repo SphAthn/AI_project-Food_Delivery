@@ -1,6 +1,9 @@
 # Datasets
 data/*.csv
 
+# Reports
+reports/*.html
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]

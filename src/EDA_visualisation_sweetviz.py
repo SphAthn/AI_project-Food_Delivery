@@ -122,6 +122,6 @@ def generate_subgroup_report(
  
  
 if __name__ == "__main__":
-    # Run from the project root: python -m src.visualisation
+    # Run from the project root: python src/EDA_visualisation_sweetviz.py
     cleaned = pd.read_csv("data/Zomato_Cleaned.csv")
     generate_sweetviz_report(cleaned, "reports/zomato_eda.html")
