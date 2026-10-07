@@ -17,7 +17,8 @@ src/
 ├──__init__.py
 ├──load_dataset.py            
 ├──missing_values.py         
-├──distance.py                
+├──distance.py              
+├──EDA_visualisation_sweetviz.py  
 └──feature_engineering.py 
 data/                        # Created automatically, the final CSV files are saved here
 ```
