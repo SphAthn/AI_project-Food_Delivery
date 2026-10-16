@@ -4,6 +4,7 @@
 # Usage: python main.py
 
 from src.data_preprocessing import get_prepared_data
+from src.split_scale import get_split_scaled_data 
 
 
 # Parameters
@@ -15,6 +16,12 @@ if __name__ == "__main__":
 
     if preprocessing_needed:
         get_prepared_data()
+
+    # Machine Learning Model Training and Evaluation
+    # Splitting the dataset into training, validation, and test sets, and scaling continuous features without leakage.
+    X_train, X_val, X_test, y_train, y_val, y_test, scaler, feature_names = get_split_scaled_data()
+
+    
 
     print("\nPipeline execution completed successfully!")
 

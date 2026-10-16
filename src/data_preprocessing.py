@@ -52,7 +52,7 @@ def get_prepared_data():
 
 
 
-    print("\nPIPELINE EXECUTION COMPLETE")
+    print("\n Preprocessing complete!")
     print(
         f" - Cleaned CSV (Rule Engine) : {CLEANED_CSV_OUT} "
         f"({final_cleaned_df.shape[0]} Rows | {final_cleaned_df.shape[1]} Cols)"
