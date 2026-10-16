@@ -14,7 +14,7 @@ from src.missing_values import clean_dataset
 
 def get_prepared_data(
     raw_csv_path: str = "data/Zomato Dataset.csv",
-    target_col: str = "Time_taken(min)",
+    target_col: str = "Time_taken (min)",
     test_size: float = 0.15,
     val_size: float = 0.15,
     random_state: int = 42,
