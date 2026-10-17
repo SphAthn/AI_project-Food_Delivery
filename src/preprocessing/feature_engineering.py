@@ -49,31 +49,5 @@ def process_features(df_clean: pd.DataFrame):
     df_encoded = df_encoded.drop(columns=columns_to_drop, errors="ignore")
 
     print(f"Encoding: {df_processed.shape[1]} columns -> {df_encoded.shape[1]} columns (one-hot, ID/date/GPS dropped)")
-
-
-    # 3. Robust Scaling on Continuous Features ONLY
-    continuous_scale_features = [
-        "distance_km",
-        "Delivery_person_Age",
-        "Delivery_person_Ratings",
-        "order_hour",
-    ]
-    scaler = RobustScaler()
-    df_encoded[continuous_scale_features] = scaler.fit_transform(
-        df_encoded[continuous_scale_features]
-    )
-
-    # Summary
-    dropped = [c for c in columns_to_drop if c in df_processed.columns]
-    kept_as_is = [
-        c for c in df_encoded.columns
-        if c not in continuous_scale_features
-        and not any(c.startswith(cat + "_") for cat in categorical_cols)
-    ]
-    print("\nColumn summary (Zomato_Encoded_ML.csv):")
-    print(f"  Created           : ['distance_km', 'order_hour']")
-    print(f"  Dropped ({len(dropped)})        : {dropped}")
-    print(f"  One-hot encoded   : {categorical_cols}")
-    print(f"  Scaled            : {continuous_scale_features}")
     
     return df_processed, df_encoded
