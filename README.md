@@ -71,7 +71,7 @@ Running `main.py` generates 4 essential output files inside `data/`:
 | :--- | :--- | :--- | :--- |
 | **`Zomato_Cleaned.csv`** | CSV | 41,488 rows × 22 cols | Cleaned human-readable dataset. Serves as the primary data contract for Prolog symbolic rule reasoning. |
 | **`Zomato_Encoded_ML.csv`** | CSV | 41,488 rows × 34 cols | One-hot encoded numeric matrix used for machine learning model training. |
-| **`best_ml_model.pkl`** | Binary `.pkl` | Model Object | Serialized binary object of the winning Stacking Ensemble Regressor exported via `joblib`. |
+| **`best_ml_model.pkl`** | Binary `.pkl` | Model Object | Serialized binary object of the winning model exported via `joblib`. |
 | **`ML_Inference_Predictions.csv`** | CSV | 8,298 rows × 35 cols | Evaluation matrix containing test features, ground-truth actual times (`Actual_Time_taken(min)`), and ML baseline estimates (`Predicted_ETA_ML(min)`). |
 
 ---
