@@ -58,6 +58,7 @@ Run these commands from the project folder:
 ```text
 pip install -r requirements.txt   # if needed
 python main.py
+python inspect_model.py
 ```
 
 No dataset file is needed. The data is downloaded automatically from KaggleHub (`saurabhbadole/zomato-delivery-operations-analytics-dataset`).
