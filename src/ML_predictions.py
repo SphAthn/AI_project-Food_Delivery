@@ -21,4 +21,20 @@ def run_predictions(X_test, y_test, best_model):
     print(f" - MAE (min): {mae:.4f}")
     print(f" - R2 Score: {r2:.4f}")
 
+    # Export predictions CSV contract for Prolog
+    os.makedirs("data", exist_ok=True)
+    if feature_names is not None:
+        inference_df = pd.DataFrame(X_test, columns=feature_names)
+    else:
+        inference_df = pd.DataFrame(X_test)
+
+    inference_df["Actual_Time_taken(min)"] = y_test.values
+    inference_df["Predicted_ETA_ML(min)"] = np.round(predictions, 2)
+
+    out_csv = "data/ML_Inference_Predictions.csv"
+    inference_df.to_csv(out_csv, index=False)
+    print(f" - Exported ML predictions artifact to '{out_csv}'")
+
+    return predictions
+
     return predictions
