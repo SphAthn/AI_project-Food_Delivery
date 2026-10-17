@@ -30,15 +30,31 @@ if __name__ == "__main__":
     # Step 2: Model Training, Hyperparameter Tuning, and Evaluation Comparison
     best_model_name, best_model = run_model_comparison(X_train, X_val, y_train, y_val)
 
-    # Step 3: Verify and Load Exported Model Artifact
+    # Step 3: Load Winning Model Artifact
     model_path = "data/best_ml_model.pkl"
     if not os.path.exists(model_path):
         raise FileNotFoundError(f"Exported model not found at {model_path}")
 
     loaded_best_model = joblib.load(model_path)
 
-    # Step 4: Make predictions on test set using the best model and export CSV contract
-    predictions = run_predictions(X_test, y_test, loaded_best_model, feature_names=feature_names)
+    # Step 4: Evaluate Test Set Performance Metrics via ML_predictions module
+    raw_predictions = run_predictions(X_test, y_test, loaded_best_model)
+
+    # Step 5: Directly Export Artifact CSV for Prolog Symbolic Rule Engine
+    if isinstance(X_test, pd.DataFrame):
+        inference_df = X_test.copy()
+    else:
+        inference_df = pd.DataFrame(X_test, columns=feature_names)
+
+    inference_df["Actual_Time_taken(min)"] = y_test.values
+    inference_df["Predicted_ETA_ML(min)"] = raw_predictions.round(2)
+
+    os.makedirs("data", exist_ok=True)
+    out_csv = "data/ML_Inference_Predictions.csv"
+    inference_df.to_csv(out_csv, index=False)
+
+    print(f"\n -> Successfully exported ML inference predictions to '{out_csv}'")
+    print(" -> Pipeline Ready for Prolog Symbolic Rule Engine Integration!")
 
     # Prolog part (Will be integrated in next phase)
 
