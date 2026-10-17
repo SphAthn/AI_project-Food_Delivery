@@ -8,8 +8,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 #from src.models.neural_network import train_and_tune_neural_network
 from src.models.random_forest import train_and_tune_random_forest
 #from src.models.ridge_regression import train_and_tune_ridge
-#from src.models.xgboost_model import train_and_tune_xgboost
-
+from src.models.xgboost_model import train_and_tune_xgboost
+#from src.models.ensemble_regressor import train_and_tune_ensemble
 
 def evaluate_model_performance(model, X_val, y_val):
     """Calculates RMSE, MAE, and R2 performance metrics on the validation set."""
@@ -29,8 +29,9 @@ def run_model_comparison(X_train, X_val, y_train, y_val):
     models_to_evaluate = {
 #        "Ridge Regression": train_and_tune_ridge,
         "Random Forest": train_and_tune_random_forest,
-#        "XGBoost Regressor": train_and_tune_xgboost,
+        "XGBoost Regressor": train_and_tune_xgboost,
 #        "MLP Neural Network": train_and_tune_neural_network,
+#        "Stacking Ensemble": train_and_tune_ensemble,
     }
 
     results = []
@@ -61,8 +62,15 @@ def run_model_comparison(X_train, X_val, y_train, y_val):
     # Select Winning Model (Lowest RMSE)
     winning_model_name = comparison_df.iloc[0]["Model"]
     winning_model = trained_models[winning_model_name]
+    
+    # Save winning model to disk
+    os.makedirs("data", exist_ok=True)
+    model_path = "data/best_ml_model.pkl"
+    joblib.dump(winning_model, model_path)
+    print(f"Successfully exported winning model ('{winning_model_name}') to '{model_path}'.")
 
     return winning_model_name, winning_model
+
     
 if __name__ == "__main__":
     run_model_comparison()
