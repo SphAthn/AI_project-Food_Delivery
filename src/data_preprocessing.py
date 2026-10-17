@@ -40,7 +40,7 @@ def get_prepared_data():
     print("First rows of the dataset with distance:")
     print(df_with_distance.head())
    
-    # 4. Feature Extraction, Encoding, and Robust Scaling
+    # 4. Feature Extraction and Encoding
     print("\nStep 4: Feature extraction and encoding")
     final_cleaned_df, final_encoded_ml_df = process_features(df_with_distance)
 

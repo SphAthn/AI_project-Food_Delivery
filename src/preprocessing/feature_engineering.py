@@ -4,7 +4,6 @@ This module contains functions for feature extraction, encoding, and scaling of 
 """
 
 import pandas as pd
-from sklearn.preprocessing import RobustScaler
 
 
 def process_features(df_clean: pd.DataFrame):
