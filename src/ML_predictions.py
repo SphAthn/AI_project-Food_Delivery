@@ -37,4 +37,3 @@ def run_predictions(X_test, y_test, best_model):
 
     return predictions
 
-    return predictions
