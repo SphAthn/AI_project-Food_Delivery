@@ -18,11 +18,11 @@ def train_and_tune_ridge(X_train, y_train, cv_folds=3):
         tuple: (best_model, best_params)
     """
     print("\nRidge Regression training and hyperparameter tuning...")
-    rf_estimator = ()
+    estimator = ()
 
     param_grid = {}
 
-    grid_search = GridSearchCV(estimator=rf_estimator, param_grid=param_grid, scoring= "neg_mean_squared_error",
+    grid_search = GridSearchCV(estimator=estimator, param_grid=param_grid, scoring= "neg_mean_squared_error",
         cv=cv_folds, n_jobs=-1, verbose=1)
    
     grid_search.fit(X_train, y_train)
