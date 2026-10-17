@@ -1,13 +1,13 @@
 """
 Feature Engineering Module
-This module contains functions for feature extraction, encoding, and scaling of the dataset.
+This module contains functions for feature extraction and encoding of the dataset.
 """
 
 import pandas as pd
 
 
 def process_features(df_clean: pd.DataFrame):
-    """Extracts order hour, generates one-hot encoding, and scales continuous features."""
+    """Extracts order hour, generates one-hot encoding."""
     df_processed = df_clean.copy()
 
     # 1. Extract Order Hour
