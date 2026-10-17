@@ -4,7 +4,7 @@
 # Date: 18-10-2026
 # Usage: Imported by src.ML_model_evaluation
 # Licence: MIT Licence
-# Description: Trains a Stacking Ensemble Regressor combining XGBoost, Random Forest, and Ridge models.
+# Description: Trains a Stacking Ensemble Regressor combining optimal pre-tuned XGBoost, Random Forest, Ridge, and MLP models.
 
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, StackingRegressor
@@ -26,7 +26,7 @@ def train_and_tune_ensemble(X_train, y_train, cv_folds=3):
     """
     print("\nEnsemble Regressor (Stacking) training with optimal base hyperparameters...")
 
-    # Define base estimators using the exact best parameters from individual grid searches
+    # Define base estimators using exact best parameters
     base_estimators = [
         (
             "xgb",
@@ -65,7 +65,8 @@ def train_and_tune_ensemble(X_train, y_train, cv_folds=3):
                 hidden_layer_sizes=(128, 64),
                 learning_rate_init=0.001,
                 random_state=42,
-                max_iter=500,
+                max_iter=1000,
+                early_stopping=True,
             ),
         ),
     ]
