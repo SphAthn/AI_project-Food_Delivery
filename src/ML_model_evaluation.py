@@ -1,6 +1,7 @@
 # Usage: python -m src.evaluate_models
 # Description: Evaluates and compares all tuned machine learning models on a validation set and saves the winning model.
 
+import os
 import numpy as np
 import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
