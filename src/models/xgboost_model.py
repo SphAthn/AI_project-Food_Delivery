@@ -1,5 +1,9 @@
-# Usage: python -m src.models.xgboost_model
-# Description: Trains and tunes a XGBoost model using GridSearchCV.
+# Student Name: Daniel Joseph Benedict Ngamelubun
+# Student FAN: ngam0004
+# File: src/models/xgboost_model.py
+# Date: 18-10-2026
+# Usage: Imported by src.ML_model_evaluation, python -m src.models.xgboost_model
+# Description: Trains and tunes an XGBoost Regressor model using GridSearchCV.
 
 import xgboost as xgb
 from sklearn.model_selection import GridSearchCV
