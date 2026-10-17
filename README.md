@@ -34,6 +34,7 @@ Source/
 │   │   └── neural_network.py    # MLP Regressor (PyTorch or Scikit-Learn)
 │   ├── ML_predictions.py        # Predictions from the best model found
 │   │
+│   ├── split_scale.py           # After the preprocessing, we split and scale the dataset to be able to perform predictions
 │   └──data/                     # Created automatically, the final CSV files are saved here
 
 
