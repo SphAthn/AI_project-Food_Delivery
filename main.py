@@ -5,6 +5,7 @@
 
 import os 
 import joblib
+import pandas as pd
 
 from src.data_preprocessing import get_prepared_data
 from src.split_scale import get_split_scaled_data 
