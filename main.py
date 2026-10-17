@@ -3,6 +3,9 @@
 # Description: Runs the full data ingestion pipeline and exports  CSV files.
 # Usage: python main.py
 
+import os 
+import joblib
+
 from src.data_preprocessing import get_prepared_data
 from src.split_scale import get_split_scaled_data 
 from src.ML_model_evaluation import run_model_comparison
