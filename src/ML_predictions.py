@@ -44,5 +44,5 @@ def run_predictions(X_test, y_test, best_model):
     inference_df.to_csv(out_csv, index=False)
     print(f" - Exported ML predictions artifact to '{out_csv}'")
 
-    return predictions
+    return predictions 
 
