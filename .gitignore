@@ -1,5 +1,6 @@
 # Datasets
 data/*.csv
+data/*.pkl
 
 # Reports
 reports/*.html
