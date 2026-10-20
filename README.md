@@ -35,7 +35,7 @@ AI_project-Food_Delivery/
 │       ├── random_forest.py    # Random Forest Regressor tuner (Sophie)
 │       ├── xgboost_model.py    # XGBoost Regressor tuner (daniel)
 │       ├── neural_network.py   # MLP Neural Network tuner
-│       ├── lightgbm_model.py   # LightGBM Regressor tuner (sanjay)
+│       ├── lightGBM_model.py   # LightGBM Regressor tuner (sanjay)
 │       └── ensemble_regressor.py # Stacking Ensemble Regressor tuner (daniel)
 │
 └── data/                       # Generated Artifacts & Data Contracts (Auto-created)
