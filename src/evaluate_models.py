@@ -8,7 +8,8 @@ import pandas as pd
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 
 from src.data_preprocessing import get_prepared_data
-from src.models.neural_network import train_and_tune_neural_network
+from src.models.neural_network import train_and_tune_neural_network 
+from src.models.lightGBM_model import train_and_tune_lightgbm
 from src.models.random_forest import train_and_tune_random_forest
 from src.models.ridge_regression import train_and_tune_ridge
 from src.models.xgboost_model import train_and_tune_xgboost
@@ -31,7 +32,8 @@ def run_model_comparison():
     models_to_evaluate = {
         "Ridge Regression": train_and_tune_ridge,
         "Random Forest": train_and_tune_random_forest,
-        "XGBoost Regressor": train_and_tune_xgboost,
+        "XGBoost Regressor": train_and_tune_xgboost, 
+        "LightGBM Regressor": train_and_tune_lightgbm,
         "MLP Neural Network": train_and_tune_neural_network,
     }
 
