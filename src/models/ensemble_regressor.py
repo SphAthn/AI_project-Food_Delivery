@@ -1,11 +1,12 @@
 # Student Name: Daniel Joseph Benedict Ngamelubun
 # Student FAN: ngam0004
 # File: src/models/ensemble_regressor.py
-# Date: 18-10-2026
+# Date: 20-10-2026
 # Usage: Imported by src.ML_model_evaluation
 # Licence: MIT Licence
-# Description: Trains a Stacking Ensemble Regressor combining optimal pre-tuned XGBoost, Random Forest, Ridge, and MLP models.
+# Description: Trains a Stacking Ensemble Regressor combining optimal pre-tuned XGBoost, LightGBM, Random Forest, Ridge, and MLP models.
 
+import lightgbm as lgb
 import xgboost as xgb
 from sklearn.ensemble import RandomForestRegressor, StackingRegressor
 from sklearn.linear_model import Ridge
@@ -37,6 +38,18 @@ def train_and_tune_ensemble(X_train, y_train, cv_folds=3):
                 subsample=1.0,
                 random_state=42,
                 n_jobs=-1,
+            ),
+        ),
+        (
+            "lgb",
+            lgb.LGBMRegressor(
+                learning_rate=0.1,
+                n_estimators=100,
+                num_leaves=63,
+                subsample=0.8,
+                random_state=42,
+                n_jobs=-1,
+                verbose=-1,
             ),
         ),
         (
