@@ -12,7 +12,7 @@ from src.models.random_forest import train_and_tune_random_forest
 #from src.models.ridge_regression import train_and_tune_ridge
 from src.models.xgboost_model import train_and_tune_xgboost
 #from src.models.ensemble_regressor import train_and_tune_ensemble
-from src.models.lightgbm_model import train_and_tune_lightgbm
+from src.models.lightGBM_model import train_and_tune_lightgbm
 
 def evaluate_model_performance(model, X_val, y_val):
     """Calculates RMSE, MAE, and R2 performance metrics on the validation set."""
