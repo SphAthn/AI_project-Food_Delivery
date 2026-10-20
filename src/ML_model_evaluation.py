@@ -12,6 +12,7 @@ from src.models.random_forest import train_and_tune_random_forest
 #from src.models.ridge_regression import train_and_tune_ridge
 from src.models.xgboost_model import train_and_tune_xgboost
 #from src.models.ensemble_regressor import train_and_tune_ensemble
+from src.models.lightgbm_model import train_and_tune_lightgbm
 
 def evaluate_model_performance(model, X_val, y_val):
     """Calculates RMSE, MAE, and R2 performance metrics on the validation set."""
@@ -32,6 +33,7 @@ def run_model_comparison(X_train, X_val, y_train, y_val):
 #        "Ridge Regression": train_and_tune_ridge,
         "Random Forest": train_and_tune_random_forest,
         "XGBoost Regressor": train_and_tune_xgboost,
+        "LightGBM Regressor": train_and_tune_lightgbm,
 #        "MLP Neural Network": train_and_tune_neural_network,
 #        "Stacking Ensemble": train_and_tune_ensemble,
     }
