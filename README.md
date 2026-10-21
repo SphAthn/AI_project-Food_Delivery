@@ -46,7 +46,8 @@ Source/
 │   │
 │   ├── models/                 
 │   │   ├── __init__.py
-│   │   ├── ridge_regression.py # Ridge/Lasso/Linear Regression with GridSearchCV
+│   │   ├── ridge_regression.py # Ridge/Lasso/Linear Regression with GridSearchCV 
+│   │   ├── lightGBM_model.py    # lightGBM  Regression with GridSearchCV
 │   │   ├── random_forest.py     # Random Forest Regressor with GridSearchCV
 │   │   ├── xgboost_model.py     # XGBoost Regressor with GridSearchCVs
 │   │   └── neural_network.py    # MLP Regressor (PyTorch or Scikit-Learn)
