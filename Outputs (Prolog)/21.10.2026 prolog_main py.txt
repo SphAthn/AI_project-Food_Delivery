@@ -1,1 +1,8 @@
-
+E:\Dani Fungsional\Beasiswa\Flinders\Kuliah\Semester 4\COMP9742 Artificial Intelligence GE\Assignments\A2\AI_project-Food_Delivery-main>python prolog_main.py
+      STARTING PROLOG SYMBOLIC RULE ENGINE PIPELINE
+Executing High-Speed Prolog File-Batch Engine over 8298 test predictions...
+Successfully generated Hybrid Inference Contract at 'data/Hybrid_Inference_Outputs.csv'.
+      BASELINE ML VS. HYBRID AI PERFORMANCE SUMMARY
+Baseline ML RMSE       : 3.8116 min | MAE: 3.0450 min | R2: 0.8337
+Hybrid AI System RMSE : 5.3981 min | MAE: 4.3697 min | R2: 0.6664
+            PROLOG ENGINE PIPELINE COMPLETE
