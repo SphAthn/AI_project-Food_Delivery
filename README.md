@@ -24,7 +24,8 @@ A2_ngam0004/
         ├── evaluate_models.py
         └── models/
             ├── __init__.py
-            ├── ridge_regression.py
+            ├── ridge_regression.py 
+            ├── lightGBM_model.py
             ├── random_forest.py
             └── xgboost_model.py
             └── neural_network.py
@@ -47,7 +48,7 @@ Source/
 │   ├── models/                 
 │   │   ├── __init__.py
 │   │   ├── ridge_regression.py # Ridge/Lasso/Linear Regression with GridSearchCV 
-│   │   ├── lightGBM_model.py    # lightGBM  Regression with GridSearchCV
+│   │   ├── lightGBM_model.py    # lightGBM  Regressor with GridSearchCV
 │   │   ├── random_forest.py     # Random Forest Regressor with GridSearchCV
 │   │   ├── xgboost_model.py     # XGBoost Regressor with GridSearchCVs
 │   │   └── neural_network.py    # MLP Regressor (PyTorch or Scikit-Learn)
