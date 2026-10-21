@@ -17,6 +17,7 @@ AI_project-Food_Delivery/
 │
 ├── prolog/                     # Symbolic Prolog Knowledge Base
 │   └── dispatch_rules.pl       # Guardrails, weather/traffic penalties & hybrid logic
+│   └── prolog_subsystem_documentation.md # Detailed specification of symbolic rules & bridge
 │
 ├── src/                        # Modular Machine Learning Subsystem
 │   ├── __init__.py
