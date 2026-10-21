@@ -1,11 +1,18 @@
+
 % SYMBOLIC PROLOG DISPATCH RULE ENGINE FOR FOOD DELIVERY ETA ADAPTATION
 % File: prolog/dispatch_rules.pl
 % Description: Evaluates operational safety guardrails, weather/traffic penalties,
 %              and computes final hybrid ETA adjustments over ML baselines.
 
+
 :- module(dispatch_rules, [
-    evaluate_order/8
+    evaluate_order/8,
+    evaluate_batch/2,
+    process_json_batch/2
 ]).
+
+:- use_module(library(http/json)).
+
 
 % 1. OPERATIONAL DISPATCH GUARDRAILS (FLAGGING REJECTIONS & HIGH-RISK ORDERS)
 
@@ -26,6 +33,7 @@ dispatch_flag(_, _, _, Weather, 'RISK_MULTIPLE_DELIVERIES_BAD_WEATHER') :-
 dispatch_flag(_, _, _, _, 'APPROVED').
 
 % 2. WEATHER PENALTY RULES (MINUTES)
+
 weather_penalty('Stormy', 15.0) :- !.
 weather_penalty('Sandstorms', 12.0) :- !.
 weather_penalty('Fog', 8.0) :- !.
@@ -33,23 +41,31 @@ weather_penalty('Windy', 5.0) :- !.
 weather_penalty('Cloudy', 3.0) :- !.
 weather_penalty(_, 0.0).
 
+
 % 3. TRAFFIC PENALTY RULES (MINUTES)
+
 traffic_penalty('Jam', 12.0) :- !.
 traffic_penalty('High', 7.0) :- !.
 traffic_penalty('Medium', 3.0) :- !.
 traffic_penalty(_, 0.0).
 
+
 % 4. FESTIVAL SURGE PENALTY RULES (MINUTES)
+
 festival_penalty('Yes', 15.0) :- !.
 festival_penalty(_, 0.0).
 
+
 % 5. MULTIPLE DELIVERIES LOAD PENALTY RULES (MINUTES)
+
 multi_delivery_penalty(NumDeliveries, Penalty) :-
     NumDeliveries > 0,
     Penalty is NumDeliveries * 4.0, !.
 multi_delivery_penalty(_, 0.0).
 
+
 % 6. MAIN HYBRID EVALUATION INFERENCE PREDICATE
+
 evaluate_order(MlEta, Distance, Rating, Weather, Traffic, Festival, MultiDeliveries,
                [FinalHybridEta, TotalPrologPenalty, DispatchFlag]) :-
 
@@ -67,3 +83,19 @@ evaluate_order(MlEta, Distance, Rating, Weather, Traffic, Festival, MultiDeliver
 
     % 4. Compute Final Hybrid ETA
     FinalHybridEta is MlEta + TotalPrologPenalty.
+
+% 7. BATCH EVALUATION PREDICATES (HIGH-SPEED JSON FILE IO)
+evaluate_batch([], []).
+evaluate_batch([[MlEta, Distance, Rating, Weather, Traffic, Festival, MultiDel]|RestInputs],
+               [[FinalEta, Penalty, Flag]|RestOutputs]) :-
+    evaluate_order(MlEta, Distance, Rating, Weather, Traffic, Festival, MultiDel, [FinalEta, Penalty, Flag]),
+    evaluate_batch(RestInputs, RestOutputs).
+
+process_json_batch(InputFile, OutputFile) :-
+    open(InputFile, read, InStream),
+    json_read_dict(InStream, Dict),
+    close(InStream),
+    evaluate_batch(Dict.data, Results),
+    open(OutputFile, write, OutStream),
+    json_write(OutStream, Results),
+    close(OutStream).
