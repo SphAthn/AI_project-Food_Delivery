@@ -65,8 +65,15 @@ Run these commands from the project folder:
 
 ```text
 pip install -r requirements.txt   # if needed
+
+#  Run Machine Learning Pipeline (Preprocessing, Tuning, Evaluation & ML Predictions)
 python main.py
+
+# Inspect Winning Model Parameters & Feature Importances
 python inspect_model.py
+
+# Run Prolog Symbolic Rule Engine (Guardrails, Penalties & Hybrid ETA Calculation)
+python prolog_main.py
 ```
 
 No dataset file is needed. The data is downloaded automatically from KaggleHub (`saurabhbadole/zomato-delivery-operations-analytics-dataset`).
