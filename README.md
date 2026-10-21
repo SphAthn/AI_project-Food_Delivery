@@ -15,12 +15,16 @@ AI_project-Food_Delivery/
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # System documentation
 │
+├── prolog/                     # Symbolic Prolog Knowledge Base
+│   └── dispatch_rules.pl       # Guardrails, weather/traffic penalties & hybrid logic
+│
 ├── src/                        # Modular Machine Learning Subsystem
 │   ├── __init__.py
 │   ├── data_preprocessing.py   # Ingestion orchestrator & pipeline manager
 │   ├── split_scale.py          # Leakage-free split & RobustScaler transformation
 │   ├── ML_model_evaluation.py  # Model hyperparameter tuning & validation benchmark
 │   ├── ML_predictions.py       # Test set prediction evaluation
+│   ├── prolog_bridge.py        # Python-SWI-Prolog subprocess execution bridge
 │   │
 │   ├── preprocessing/          # Feature engineering & data hygiene submodules
 │   │   ├── distance.py         # Coordinate distance calculation (Manhattan)
@@ -43,6 +47,7 @@ AI_project-Food_Delivery/
     ├── Zomato_Encoded_ML.csv   # One-hot encoded dataset (Machine Learning contract)
     ├── best_ml_model.pkl       # Serialized winning ML model (Joblib binary)
     └── ML_Inference_Predictions.csv # Test set predictions + actuals (Prolog contract)
+    └── Hybrid_Inference_Outputs.csv # Final Hybrid AI prediction outputs & flags
 
 ```
 
@@ -75,12 +80,23 @@ Running `main.py` generates 4 essential output files inside `data/`:
 | **`best_ml_model.pkl`** | Binary `.pkl` | Model Object | Serialized binary object of the winning model exported via `joblib`. |
 | **`ML_Inference_Predictions.csv`** | CSV | 8,298 rows × 35 cols | Evaluation matrix containing test features, ground-truth actual times (`Actual_Time_taken(min)`), and ML baseline estimates (`Predicted_ETA_ML(min)`). |
 
----
+
 
 ## Step-by-Step Execution Process
-
+Phase 1: Machine Learning Regression Subsystem
 1. **Automated Data Ingestion & Hygiene:** Downloads raw data via `kagglehub`, filters invalid GPS coordinates (≤ 0) and underage couriers (< 18), and imputes numerical nulls using training medians.
 2. **Feature Engineering & Coordinate Math:** Computes Manhattan delivery distance (`distance_km`) and extracts temporal order features (`order_hour`).
 3. **Leakage-Free Splitting & Scaling:** Splitting occurs prior to scaling (68% Train / 12% Val / 20% Test). Continuous variables are scaled using `RobustScaler` fit strictly on the training set.
 4. **GridSearchCV Hyperparameter Tuning:** Cross-validates 5 or more distinct model architectures and ranks performance by RMSE.
 5. **Inference & Artifact Serialization:** Saves the winning model (`best_ml_model.pkl`) and exports prediction matrices for Prolog symbolic rule reasoning.
+
+Phase 2: Prolog Symbolic Reasoning & Hybrid Inference
+1. Contract Unification: src/prolog_bridge.py aligns test set predictions from data/ML_Inference_Predictions.csv with human-readable categorical context from data/Zomato_Cleaned.csv.
+2. Symbolic Guardrail Evaluation: Queries prolog/dispatch_rules.pl to flag high-risk or invalid orders (REJECT_DISTANCE_EXCEEDED for 
+>25 km, RISK_LOW_RATING_PEAK_TRAFFIC, or RISK_MULTIPLE_DELIVERIES_BAD_WEATHER).
+3. Dynamic Penalty Calculation: Evaluates specific delay adjustments for environmental and operational bottlenecks:
+    Weather: Stormy (+15 min), Sandstorms (+12 min), Fog (+8 min), Windy (+5 min), Cloudy (+3 min)
+    Traffic: Jam (+12 min), High (+7 min), Medium (+3 min)
+    Festival Surge: Active Festival (+15 min)
+    Multiple Deliveries: Multi-stop load penalty (+4 min×stops)
+4. Hybrid ETA Aggregation & Export: Sums baseline ML predictions with Prolog penalty adjustments (Hybrid_ETA=ML_ETA+Prolog_Penalties) and exports results to data/Hybrid_Inference_Outputs.csv.
