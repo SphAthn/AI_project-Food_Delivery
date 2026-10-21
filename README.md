@@ -12,6 +12,7 @@ AI_project-Food_Delivery/
 │
 ├── main.py                     # Master execution pipeline
 ├── inspect_model.py            # Model inspection & hyperparameter utility
+├── prolog_main.py              # Master Prolog Symbolic Engine pipeline
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # System documentation
 │
