@@ -95,6 +95,12 @@ def run_prolog_evaluation():
             print(f"Baseline ML RMSE       : {ml_rmse:.4f} min | MAE: {ml_mae:.4f} min | R2: {ml_r2:.4f}")
             print(f"Hybrid AI System RMSE : {hybrid_rmse:.4f} min | MAE: {hybrid_mae:.4f} min | R2: {hybrid_r2:.4f}")
 
+            ml_late = (actuals > ml_preds).mean()
+            hybrid_late = (actuals > hybrid_preds).mean()
+            print(f"Late rate (actual > ETA): ML {ml_late:.1%} | Hybrid {hybrid_late:.1%}")
+
+            
+
     except Exception as e:
         print(f"Error during Prolog file-batch execution: {e}")
 

@@ -1,6 +1,6 @@
 # Overview
 
-This repository implements a modular Hybrid AI Prediction and Inference Engine for urban food delivery duration estimation. It combines a data-driven Machine Learning regression pipeline with a symbolic Prolog rule engine to enforce real-world dispatch safety guardrails and weather/traffic penalty adjustments.
+This repository implements a modular Hybrid AI Prediction and Inference Engine for urban food delivery duration estimation. It combines a data-driven Machine Learning regression pipeline with a symbolic Prolog rule engine to enforce real-world dispatch safety guardrails, apply a courier-protecting safety margin, and justify each prediction in plain language.
 
 Git Repository: https://github.com/SphAthn/AI_project-Food_Delivery.git
 
@@ -12,12 +12,14 @@ AI_project-Food_Delivery/
 │
 ├── main.py                     # Master execution pipeline
 ├── inspect_model.py            # Model inspection & hyperparameter utility
-├── prolog_main.py              # Master Prolog Symbolic Engine pipeline
+├── prolog_main.py              # Master Prolog Symbolic Engine pipeline (full test set)
+├── explain_main.py             # Prolog explanation of a single order (manager-friendly)
 ├── requirements.txt            # Python dependencies
 ├── README.md                   # System documentation
 │
 ├── prolog/                     # Symbolic Prolog Knowledge Base
-│   └── dispatch_rules.pl       # Guardrails, weather/traffic penalties & hybrid logic
+│   ├── dispatch_rules.pl       # Guardrails, safety margin, weather/traffic penalties & hybrid logic
+│   ├── explain_rules.pl        # Plain-language justification of one ETA (reuses dispatch_rules.pl)
 │   └── prolog_subsystem_documentation.md # Detailed specification of symbolic rules & bridge
 │
 ├── src/                        # Modular Machine Learning Subsystem
@@ -26,7 +28,9 @@ AI_project-Food_Delivery/
 │   ├── split_scale.py          # Leakage-free split & RobustScaler transformation
 │   ├── ML_model_evaluation.py  # Model hyperparameter tuning & validation benchmark
 │   ├── ML_predictions.py       # Test set prediction evaluation
-│   ├── prolog_bridge.py        # Python-SWI-Prolog subprocess execution bridge
+│   ├── prolog_bridge.py        # Python-SWI-Prolog subprocess execution bridge (batch)
+│   ├── prolog_explain.py       # Python-SWI-Prolog bridge for single-order explanations
+│   ├── penality_calibration.py # Residual analysis used to calibrate the Prolog penalties (manual)
 │   │
 │   ├── preprocessing/          # Feature engineering & data hygiene submodules
 │   │   ├── distance.py         # Coordinate distance calculation (Manhattan)
@@ -37,7 +41,7 @@ AI_project-Food_Delivery/
 │   │
 │   └── models/                 # Model tuning specifications (GridSearchCV)
 │       ├── __init__.py
-│       ├── ridge_regression.py # Ridge Regression tuner (
+│       ├── ridge_regression.py # Ridge Regression tuner
 │       ├── random_forest.py    # Random Forest Regressor tuner (Sophie)
 │       ├── xgboost_model.py    # XGBoost Regressor tuner (daniel)
 │       ├── neural_network.py   # MLP Neural Network tuner
@@ -48,7 +52,7 @@ AI_project-Food_Delivery/
     ├── Zomato_Cleaned.csv      # Unencoded cleaned dataset (Rule Engine contract)
     ├── Zomato_Encoded_ML.csv   # One-hot encoded dataset (Machine Learning contract)
     ├── best_ml_model.pkl       # Serialized winning ML model (Joblib binary)
-    └── ML_Inference_Predictions.csv # Test set predictions + actuals (Prolog contract)
+    ├── ML_Inference_Predictions.csv # Test set predictions + actuals (Prolog contract)
     └── Hybrid_Inference_Outputs.csv # Final Hybrid AI prediction outputs & flags
 
 ```
@@ -57,7 +61,10 @@ AI_project-Food_Delivery/
 
 - Python 3.11 or newer
 - The packages listed in `requirements.txt`
+- SWI-Prolog version 9 or newer. The `swipl` command must be available in `PATH`. Check with `swipl --version`.
 - An internet connection to download the Kaggle dataset
+
+## How to run
 
 ## How to run
 
@@ -72,13 +79,16 @@ python main.py
 # Inspect Winning Model Parameters & Feature Importances
 python inspect_model.py
 
-# Run Prolog Symbolic Rule Engine (Guardrails, Penalties & Hybrid ETA Calculation)
+# Run Prolog Symbolic Rule Engine (Guardrails, Safety Margin, Penalties & Hybrid ETA Calculation)
 python prolog_main.py
+
+# Explain one prediction with Prolog
+python explain_main.py 34         # explains order #34 of the test set
+
 ```
 
 No dataset file is needed. The data is downloaded automatically from KaggleHub (`saurabhbadole/zomato-delivery-operations-analytics-dataset`).
 
-##  Output Artifacts
 
 Running `main.py` generates 4 essential output files inside `data/`:
 
@@ -88,6 +98,8 @@ Running `main.py` generates 4 essential output files inside `data/`:
 | **`Zomato_Encoded_ML.csv`** | CSV | 41,488 rows × 34 cols | One-hot encoded numeric matrix used for machine learning model training. |
 | **`best_ml_model.pkl`** | Binary `.pkl` | Model Object | Serialized binary object of the winning model exported via `joblib`. |
 | **`ML_Inference_Predictions.csv`** | CSV | 8,298 rows × 35 cols | Evaluation matrix containing test features, ground-truth actual times (`Actual_Time_taken(min)`), and ML baseline estimates (`Predicted_ETA_ML(min)`). |
+
+Running `prolog_main.py` then generates `data/Hybrid_Inference_Outputs.csv`: the test set with the Prolog adjustment (`Prolog_Penalty_Minutes`), the final ETA (`Hybrid_Final_ETA(min)`) and the dispatch flag (`Dispatch_Status`).
 
 
 
@@ -99,13 +111,18 @@ Phase 1: Machine Learning Regression Subsystem
 4. **GridSearchCV Hyperparameter Tuning:** Cross-validates 5 or more distinct model architectures and ranks performance by RMSE.
 5. **Inference & Artifact Serialization:** Saves the winning model (`best_ml_model.pkl`) and exports prediction matrices for Prolog symbolic rule reasoning.
 
+
 Phase 2: Prolog Symbolic Reasoning & Hybrid Inference
 1. Contract Unification: src/prolog_bridge.py aligns test set predictions from data/ML_Inference_Predictions.csv with human-readable categorical context from data/Zomato_Cleaned.csv.
 2. Symbolic Guardrail Evaluation: Queries prolog/dispatch_rules.pl to flag high-risk or invalid orders (REJECT_DISTANCE_EXCEEDED for 
->25 km, RISK_LOW_RATING_PEAK_TRAFFIC, or RISK_MULTIPLE_DELIVERIES_BAD_WEATHER).
-3. Dynamic Penalty Calculation: Evaluates specific delay adjustments for environmental and operational bottlenecks:
-    Weather: Stormy (+15 min), Sandstorms (+12 min), Fog (+8 min), Windy (+5 min), Cloudy (+3 min)
-    Traffic: Jam (+12 min), High (+7 min), Medium (+3 min)
-    Festival Surge: Active Festival (+15 min)
-    Multiple Deliveries: Multi-stop load penalty (+4 min×stops)
-4. Hybrid ETA Aggregation & Export: Sums baseline ML predictions with Prolog penalty adjustments (Hybrid_ETA=ML_ETA+Prolog_Penalties) and exports results to data/Hybrid_Inference_Outputs.csv.
+>25 km, RISK_LOW_RATING_PEAK_TRAFFIC, or RISK_MULTIPLE_DELIVERIES_BAD_WEATHER). Flags do not change the ETA: they trigger a refusal or an alert for the dispatcher.
+3. Safety Margin Calculation: Residual analysis (`src/penality_calibration.py`, run manually) shows that the ML model already captures weather, traffic and load effects (mean residuals within ±0.25 min), so Prolog does not "correct" it. Instead it adds a small margin to protect couriers, since the raw ML ETA is exceeded on 48.1% of orders:
+    Standard safety margin: +2 min on every order
+    Severe weather (Stormy, Sandstorms, Fog): +1 min
+    Heavy traffic (Jam, High): +1 min
+    Multiple Deliveries: +0.5 min per extra delivery
+    The +2 min margin is the data-supported part; the other supplements are policy choices.
+4. Hybrid ETA Aggregation & Export: Sums baseline ML predictions with the Prolog adjustments (Hybrid_ETA=ML_ETA+Prolog_Penalties), exports results to data/Hybrid_Inference_Outputs.csv and prints the ML vs. hybrid comparison (RMSE, MAE, R2, late rate). The hybrid trades about 0.6 min of MAE for a late rate cut from 48.1% to 25.9%.
+
+Phase 3: Single-Order Explanation
+`python explain_main.py 34` explains one test-set order (or an order typed in the script). src/prolog_explain.py calls prolog/explain_rules.pl, which reuses the same rules as the batch engine and prints a short plain-language justification: ML estimate, each adjustment and its reason, final ETA, dispatch decision and the courier/company trade-off.
