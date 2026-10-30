@@ -1,6 +1,9 @@
 # Datasets
 data/*.csv
 data/*.pkl
+data/ML_Inference_Predictions.csv
+data/Hybrid_Inference_Outputs.csv
+data/best_ml_model.pkl
 
 # Reports
 reports/*.html
