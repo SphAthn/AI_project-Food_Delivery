@@ -1,0 +1,98 @@
+(AI_project) PS C:\Users\sophi\Documents\IF\Flinders\AI-COMP9742\AI_project-Food_Delivery> python .\src\penality_calibration.py
+=== Mean residual per category (minutes) ===
+
+                    mean  count
+Weather_conditions             
+Cloudy              0.01   1392
+Fog                -0.05   1417
+Sandstorms         -0.01   1322
+Stormy             -0.05   1368
+Sunny              -0.06   1362
+Unknown            -0.35     76
+Windy              -0.19   1361 
+
+                      mean  count
+Road_traffic_density             
+High                  0.12    837
+Jam                  -0.05   2572
+Low                  -0.10   2850
+Medium               -0.07   1965
+Unknown              -0.37     74 
+
+          mean  count
+Festival             
+No       -0.06   8098
+Unknown   0.08     47
+Yes      -0.08    153 
+
+                     mean  count
+multiple_deliveries             
+0.0                 -0.07   2559
+1.0                 -0.06   5291
+2.0                  0.06    378
+3.0                 -0.05     70 
+
+=== Additive penalties (regression on calibration half, minutes) ===
+intercept                        0.06
+Weather_conditions_Cloudy        0.11
+Weather_conditions_Fog          -0.24
+Weather_conditions_Sandstorms   -0.12
+Weather_conditions_Stormy       -0.17
+Weather_conditions_Unknown       5.01
+Weather_conditions_Windy        -0.22
+Road_traffic_density_High        0.26
+Road_traffic_density_Jam         0.04
+Road_traffic_density_Medium     -0.00
+Road_traffic_density_Unknown    -5.73
+Festival_Unknown                -0.32
+Festival_Yes                    -0.11
+multiple_deliveries              0.01
+dtype: float64 
+
+Intercept = residual of the reference case (Sunny / Low traffic / no festival / 0 deliveries).
+multiple_deliveries = minutes PER extra delivery.
+
+=== Holdout check (n = 4149) ===
+ML only     : MAE 3.000 | RMSE 3.739
+ML + penalty: MAE 3.004 | RMSE 3.743
+=== Spread and 80th percentile of residuals per category ===
+
+                    mean   std   q80     n
+Weather_conditions                        
+Cloudy              0.01  3.79  3.29  1392
+Fog                -0.05  3.83  3.20  1417
+Sandstorms         -0.01  3.78  3.27  1322
+Stormy             -0.05  3.86  3.30  1368
+Sunny              -0.06  3.86  3.24  1362
+Unknown            -0.35  3.98  2.29    76
+Windy              -0.19  3.75  3.05  1361 
+
+                      mean   std   q80     n
+Road_traffic_density                        
+High                  0.12  3.89  3.45   837
+Jam                  -0.05  3.80  3.15  2572
+Low                  -0.10  3.83  3.19  2850
+Medium               -0.07  3.76  3.27  1965
+Unknown              -0.37  3.96  2.18    74 
+
+          mean   std   q80     n
+Festival                        
+No       -0.06  3.81  3.22  8098
+Unknown   0.08  4.14  4.60    47
+Yes      -0.08  3.76  2.83   153 
+
+                     mean   std   q80     n
+multiple_deliveries                        
+0.0                 -0.07  3.80  3.20  2559
+1.0                 -0.06  3.82  3.20  5291
+2.0                  0.06  3.81  3.42   378
+3.0                 -0.05  3.48  3.03    70 
+
+Global q80: 3.21
+Late rate, ML only: 0.481
+=== Safety buffer trade-off ===
+buffer   0 min | late rate 48.1% | MAE 3.04
+buffer   1 min | late rate 38.7% | MAE 3.18
+buffer   2 min | late rate 28.8% | MAE 3.50
+buffer   3 min | late rate 21.4% | MAE 4.00
+buffer 3.5 min | late rate 17.7% | MAE 4.31

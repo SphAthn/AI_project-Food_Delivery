@@ -1,0 +1,9 @@
+(AI_project) PS C:\Users\sophi\Documents\IF\Flinders\AI-COMP9742\AI_project-Food_Delivery> python explain_main.py 34
+
+Order: 13.2 km, courier rating 4.7, weather Sandstorms, traffic Medium, festival No.
+The ML model predicts 37.2 min and the adjustments add +3.5 min, so the ETA is 40.7 min.
+  +2.0 min as a standard safety margin: the ML estimate alone is late for about one order out of two.
+  +1.0 min for the weather, which slows couriers down.
+  +0.5 min because the courier carries 1 extra order at the same time.
+
+Decision: Approved for standard dispatch, no safety rule triggered.

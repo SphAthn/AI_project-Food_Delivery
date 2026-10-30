@@ -1,0 +1,9 @@
+(AI_project) PS C:\Users\sophi\Documents\IF\Flinders\AI-COMP9742\AI_project-Food_Delivery> python prolog_main.py
+      STARTING PROLOG SYMBOLIC RULE ENGINE PIPELINE     
+Executing High-Speed Prolog File-Batch Engine over 8298 test predictions...
+Successfully generated Hybrid Inference Contract at 'data/Hybrid_Inference_Outputs.csv'.
+      BASELINE ML VS. HYBRID AI PERFORMANCE SUMMARY     
+Baseline ML RMSE       : 3.8115 min | MAE: 3.0450 min | R2: 0.8337
+Hybrid AI System RMSE : 4.5312 min | MAE: 3.6780 min | R2: 0.7649
+Late rate (actual > ETA): ML 48.1% | Hybrid 25.9%
+            PROLOG ENGINE PIPELINE COMPLETE
